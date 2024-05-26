@@ -32,7 +32,7 @@ authRouter.post("/api/signup", async (req, res) => {
             'INSERT INTO users (name, email, password,type) VALUES ($1, $2, $3, $4) RETURNING *',
             [name, email, hashedPassword, 'User']
         );
-        res.json(result.rows[0]);
+        res.status(200).json(result.rows[0]);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
