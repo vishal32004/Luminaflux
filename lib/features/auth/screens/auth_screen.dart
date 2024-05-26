@@ -1,6 +1,7 @@
 import 'package:azon/common/widgets/custom_button.dart';
 import 'package:azon/common/widgets/custom_textfiled.dart';
 import 'package:azon/constants/global_variable.dart';
+import 'package:azon/features/auth/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
 enum Auth {
@@ -20,9 +21,19 @@ class _AuthScreenState extends State<AuthScreen> {
   Auth _auth = Auth.signUp;
   final _signUpFormKey = GlobalKey<FormState>();
   final _signInFormKey = GlobalKey<FormState>();
+  final AuthService authService = AuthService();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+
+  void signUpUser() {
+    authService.signUpUser(
+        context: context,
+        name: _nameController.text,
+        email: _emailController.text,
+        password: _passwordController.text);
+  }
 
   @override
   void dispose() {
@@ -36,6 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     // Navigator.pushNamed(context, "");
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: GlobalVariables.greyBackgroundCOlor,
       body: SafeArea(
         child: Padding(
@@ -98,7 +110,13 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        CustomButton(text: 'Sign Up', onTap: () {})
+                        CustomButton(
+                            text: 'Sign Up',
+                            onTap: () {
+                              if (_signUpFormKey.currentState!.validate()) {
+                                signUpUser();
+                              }
+                            })
                       ],
                     ),
                   ),
